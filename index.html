@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mbwana Ramadhani — DevOps Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111318;
+      --border: #1e2230;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --green: #22c55e;
+      --orange: #f97316;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --card: #13161f;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GLOW ORBS ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(0,229,255,0.06); top: -100px; right: -100px; }
+    .orb-2 { width: 400px; height: 400px; background: rgba(124,58,237,0.08); bottom: 100px; left: -100px; }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 32px 80px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 64px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      flex-shrink: 0;
+    }
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent), var(--accent2), var(--accent));
+      animation: spin 6s linear infinite;
+    }
+    .avatar-inner {
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+    }
+
+    .header-text .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .header-text h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1px;
+    }
+    .header-text h1 span { color: var(--accent); }
+    .header-text .role {
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .contact-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .contact-strip a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .contact-strip a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── STATUS BADGE ── */
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--green);
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.25);
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 64px;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── SECTION ── */
+    section {
+      margin-bottom: 56px;
+      animation: fadeUp 0.7s ease both;
+    }
+    section:nth-child(2) { animation-delay: 0.15s; }
+    section:nth-child(3) { animation-delay: 0.2s; }
+    section:nth-child(4) { animation-delay: 0.25s; }
+    section:nth-child(5) { animation-delay: 0.3s; }
+    section:nth-child(6) { animation-delay: 0.35s; }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── ABOUT ── */
+    .about-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #cbd5e1;
+      max-width: 720px;
+    }
+    .about-text strong { color: var(--text); font-weight: 600; }
+
+    /* ── STATS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .stat-card .num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+    }
+    .stat-card .label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── SKILLS ── */
+    .skill-groups {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .skill-group:hover { border-color: var(--border); }
+    .skill-group-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag-pill {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .tag-pill.cyan  { color: var(--accent);  border-color: rgba(0,229,255,0.3);  background: rgba(0,229,255,0.06); }
+    .tag-pill.purple{ color: #a78bfa;        border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.08);}
+    .tag-pill.green { color: var(--green);   border-color: rgba(34,197,94,0.3);  background: rgba(34,197,94,0.06); }
+    .tag-pill.orange{ color: var(--orange);  border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.06);}
+
+    /* ── EXPERIENCE ── */
+    .timeline { display: flex; flex-direction: column; gap: 20px; }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 2px 1fr;
+      gap: 24px;
+    }
+    .timeline-line {
+      position: relative;
+      background: var(--border);
+    }
+    .timeline-line::before {
+      content: '';
+      position: absolute;
+      top: 6px; left: -4px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+    .timeline-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      transition: border-color 0.2s;
+    }
+    .timeline-content:hover { border-color: rgba(0,229,255,0.3); }
+    .job-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+    .job-title { font-size: 16px; font-weight: 700; }
+    .job-company { color: var(--accent); font-size: 14px; margin-top: 2px; }
+    .job-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .job-desc {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.7;
+    }
+    .job-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+    /* ── CERTIFICATIONS ── */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cert-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+    .cert-icon { font-size: 28px; flex-shrink: 0; }
+    .cert-name { font-size: 13px; font-weight: 600; }
+    .cert-issuer { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-top: 2px; }
+    .cert-year { font-size: 11px; color: var(--accent); font-family: 'Space Mono', monospace; margin-top: 2px; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+      .contact-strip { justify-content: center; }
+      .status { align-self: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header>
+      <div class="avatar-wrap">
+        <div class="avatar-inner">👨‍💻</div>
+      </div>
+      <div class="header-text">
+        <div class="tag">// DevOps Engineer</div>
+        <h1>Mbwana <span>Ramadhani</span></h1>
+        <div class="role">$ infrastructure · automation · reliability</div>
+        <div class="contact-strip">
+          <a href="/cdn-cgi/l/email-protection#81e0ede4f9c1e4f9e0ecf1ede4afe2eeec">✉ <span class="__cf_email__" data-cfemail="a8c9c4cdd0e8cdd0c9c5d8c4cd86cbc7c5">[email&#160;protected]</span></a>
+          <a href="#">⌁ linkedin.com/in/alexcarter</a>
+          <a href="#">⌥ github.com/alexcarter</a>
+          <a href="#">◎ Dubai, UAE</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- STATUS -->
+    <div class="status">
+      <div class="status-dot"></div>
+      Open to senior / lead DevOps opportunities
+    </div>
+
+    <!-- ABOUT -->
+    <section>
+      <div class="section-label">About</div>
+      <p class="about-text">
+        Senior DevOps Engineer with <strong>10+ years</strong> of experience designing and operating
+        large-scale cloud infrastructure. Passionate about <strong>infrastructure-as-code</strong>,
+        eliminating toil through automation, and building <strong>zero-downtime deployment pipelines</strong>
+        that ship faster without sacrificing reliability. I thrive at the intersection of
+        development velocity and operational excellence.
+      </p>
+    </section>
+
+    <!-- STATS -->
+    <section>
+      <div class="section-label">By the numbers</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="num">10+</div><div class="label">Years Experience</div></div>
+        <div class="stat-card"><div class="num">99.98%</div><div class="label">Avg. Uptime SLA</div></div>
+        <div class="stat-card"><div class="num">200+</div><div class="label">Microservices Managed</div></div>
+        <div class="stat-card"><div class="num">12</div><div class="label">Cloud Certifications</div></div>
+        <div class="stat-card"><div class="num">&lt;5min</div><div class="label">Avg. Deploy Time</div></div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section>
+      <div class="section-label">Skills &amp; Tools</div>
+      <div class="skill-groups">
+        <div class="skill-group">
+          <div class="skill-group-title">Cloud &amp; Infrastructure</div>
+          <div class="tags">
+            <span class="tag-pill cyan">AWS</span>
+            <span class="tag-pill cyan">GCP</span>
+            <span class="tag-pill cyan">Azure</span>
+            <span class="tag-pill cyan">Terraform</span>
+            <span class="tag-pill cyan">Pulumi</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Containers &amp; Orchestration</div>
+          <div class="tags">
+            <span class="tag-pill purple">Kubernetes</span>
+            <span class="tag-pill purple">Docker</span>
+            <span class="tag-pill purple">Helm</span>
+            <span class="tag-pill purple">Istio</span>
+            <span class="tag-pill purple">ArgoCD</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">CI/CD &amp; Automation</div>
+          <div class="tags">
+            <span class="tag-pill green">GitHub Actions</span>
+            <span class="tag-pill green">Jenkins</span>
+            <span class="tag-pill green">GitLab CI</span>
+            <span class="tag-pill green">Ansible</span>
+            <span class="tag-pill green">Chef</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Observability &amp; Security</div>
+          <div class="tags">
+            <span class="tag-pill orange">Prometheus</span>
+            <span class="tag-pill orange">Grafana</span>
+            <span class="tag-pill orange">ELK Stack</span>
+            <span class="tag-pill orange">Vault</span>
+            <span class="tag-pill orange">OPA</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section>
+      <div class="section-label">Experience</div>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-line"></div>
+          <div class="timeline-content">
+            <div class="job-header">
+              <div>
+                <div class="job-title">Senior DevOps Engineer</div>
+                <div class="job-company">TechNova Inc.</div>
+              </div>
+              <div class="job-date">2021 — Present</div>
+            </div>
+            <p class="job-desc">
+              Led migration of a monolithic application to Kubernetes-based microservices on AWS EKS,
+              reducing infrastructure costs by 40%. Built GitOps workflows with ArgoCD enabling 50+
+              daily deployments with zero downtime. Established SRE practices, cutting MTTR from 45min to 8min.
+            </p>
+            <div class="job-tags">
+              <span class="tag-pill cyan">AWS EKS</span>
+              <span class="tag-pill purple">ArgoCD</span>
+              <span class="tag-pill green">Terraform</span>
+              <span class="tag-pill orange">Prometheus</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-line"></div>
+          <div class="timeline-content">
+            <div class="job-header">
+              <div>
+                <div class="job-title">DevOps Engineer</div>
+                <div class="job-company">CloudBase Systems</div>
+              </div>
+              <div class="job-date">2018 — 2021</div>
+            </div>
+            <p class="job-desc">
+              Designed and maintained multi-region GCP infrastructure serving 5M+ daily active users.
+              Automated environment provisioning with Terraform, reducing new-environment setup from
+              3 days to 20 minutes. Built centralized logging pipeline processing 2TB/day.
+            </p>
+            <div class="job-tags">
+              <span class="tag-pill cyan">GCP</span>
+              <span class="tag-pill green">Ansible</span>
+              <span class="tag-pill orange">ELK Stack</span>
+              <span class="tag-pill purple">Docker</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-line"></div>
+          <div class="timeline-content">
+            <div class="job-header">
+              <div>
+                <div class="job-title">Systems Engineer</div>
+                <div class="job-company">DataStream Ltd.</div>
+              </div>
+              <div class="job-date">2016 — 2018</div>
+            </div>
+            <p class="job-desc">
+              Managed Linux server fleet (500+ nodes) and migrated on-prem workloads to AWS.
+              Implemented Jenkins CI/CD pipelines, reducing release cycle from 2 weeks to 3 days.
+            </p>
+            <div class="job-tags">
+              <span class="tag-pill cyan">AWS EC2</span>
+              <span class="tag-pill green">Jenkins</span>
+              <span class="tag-pill orange">Linux</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section>
+      <div class="section-label">Certifications</div>
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-icon">☁️</div>
+          <div>
+            <div class="cert-name">AWS Solutions Architect – Pro</div>
+            <div class="cert-issuer">Amazon Web Services</div>
+            <div class="cert-year">2023</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">⚙️</div>
+          <div>
+            <div class="cert-name">Certified Kubernetes Admin (CKA)</div>
+            <div class="cert-issuer">CNCF</div>
+            <div class="cert-year">2022</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🔐</div>
+          <div>
+            <div class="cert-name">Certified Kubernetes Security (CKS)</div>
+            <div class="cert-issuer">CNCF</div>
+            <div class="cert-year">2023</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon">🌐</div>
+          <div>
+            <div class="cert-name">GCP Professional DevOps Engineer</div>
+            <div class="cert-issuer">Google Cloud</div>
+            <div class="cert-year">2022</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+  
